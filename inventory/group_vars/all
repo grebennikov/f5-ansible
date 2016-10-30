@@ -1,10 +1,13 @@
 ---
 
 bigip_username: "admin"
-bigip_password: "password"
+bigip_password: "admin"
 bigip_port: "443"
 bigip_partition: "Common"
 validate_certs: "no"
+
+internal_vip: 10.0.0.100
+external_vip: 192.168.0.100
 
 pool_lb_method: "round_robin"
 pool_reselect_tries: 10
