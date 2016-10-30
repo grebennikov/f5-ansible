@@ -1,0 +1,123 @@
+---
+
+# Test the bigip_pool_member module
+#
+# Running this playbook assumes that you have a BIG-IP installation at the
+# ready to receive the commands issued in this Playbook.
+#
+# This module will run tests against a BIG-IP host to verify that the
+# bigip_pool_member module behaves as expected.
+#
+# Usage:
+#
+#    ansible-playbook -i notahost, playbooks/bigip_pool_member.yaml
+#
+# Examples:
+#
+#    Run all tests on the bigip_pool_member module
+#
+#    ansible-playbook -i notahost, playbooks/bigip_pool_member.yaml
+#
+# Tested platforms:
+#
+#    - NA
+#
+
+#- name: Test the bigip_pool_member module
+#  hosts: f5-test
+#  connection: local
+
+#  roles:
+#      - bigip_pool_member
+
+- hosts: f5-test
+  connection: local
+  tasks:
+    - debug: var=bigip_port
+    - name: Create pool
+      bigip_pool:
+          name: "{{ pool_name }}"
+#          name: "{{ item }}"
+          password: "{{ bigip_password }}"
+          server: "{{ inventory_hostname }}"
+          server_port: "{{ bigip_port }}"
+          state: "present"
+          user: "{{ bigip_username }}"
+          validate_certs: "{{ validate_certs }}"
+      register: result
+#      with_items: "{{ pool_names }}"
+#      vars:
+#          - pool_names:
+#            - "foo.pool"
+#            - "bar.pool"
+#            - "pool1.pool"
+ 
+    - name: Add pool member
+      bigip_pool_member:
+          connection_limit: "{{ connection_limit }}"
+          description: "{{ item.desc }}"
+          host: "{{ item.ip }}"
+          partition: "{{ bigip_partition }}"
+          password: "{{ bigip_password }}"
+          pool: "{{ pool_name }}"
+          port: "{{ pool_member_port }}"
+#          port: "{{ node_port }}"
+          rate_limit: "{{ rate_limit }}"
+          ratio: "{{ ratio }}"
+          server: "{{ inventory_hostname }}"
+          server_port: "{{ bigip_port }}"
+          state: "present"
+          user: "{{ bigip_username }}"
+          validate_certs: "{{ validate_certs }}"
+      with_items: "{{ pool_members }}"
+#      with_items: 
+#          - ip: 10.0.0.1
+#            desc: "node1"
+#          - ip: 10.0.0.2
+#            desc: "node2"
+#      vars:
+#          - pool_name: pool1.pool
+#          - node_port: 80
+      register: result
+
+    - name: Add virtual server
+      bigip_virtual_server:
+          all_profiles: "{{ vs_profiles1 }}"
+          description: "{{ vs_description }}"
+          destination: "{{ node_host }}"
+          name: "{{ vs_name }}"
+          partition: "{{ bigip_partition }}"
+          password: "{{ bigip_password }}"
+          port: "{{ vs_port1 }}"
+          pool: "{{ pool_name }}"
+          server: "{{ inventory_hostname }}"
+          server_port: "{{ bigip_port }}"
+          snat: "{{ vs_snat1 }}"
+          state: "present"
+          user: "{{ bigip_username }}"
+          validate_certs: "{{ validate_certs }}"
+      register: result
+      vars:
+#          - vs_profiles1:
+#            - tcp
+#            - http
+#          - node_host: "10.0.0.100"
+#          - vs_description: "newserver111"
+#          - vs_name: "newserver1"
+#          - vs_port1: 80
+#          - vs_snat1: "Automap"
+#          - pool_name: pool1.pool
+
+    - name: Add virtual address
+      bigip_virtual_address:
+          address: "{{ va_address }}"
+          partition: "{{ bigip_partition }}"
+          password: "{{ bigip_password }}"
+          server: "{{ inventory_hostname }}"
+          server_port: "{{ bigip_port }}"
+          state: "present"
+          user: "{{ bigip_username }}"
+          validate_certs: "{{ validate_certs }}"
+      register: result
+#      vars:
+#          - va_address: 10.0.0.100

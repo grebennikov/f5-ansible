@@ -1,0 +1,8 @@
+all_hosts: "{{ groups['glance_api']}}" ## all hosts desc
+
+
+with_items: "{{ groups['glance_api']}}"
+
+
+desc: "{{ item }}"
+ip: "{{ hostvars[item]['ansible_ssh_host'] }}"

@@ -22,7 +22,7 @@
 #
 #    - NA
 #
-
+- debug: var=bigip_username
 - name: Test the bigip_pool module
   hosts: f5-test
   connection: local

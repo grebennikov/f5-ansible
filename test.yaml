@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+    - include: debug.yml letter={{item}}
+      with_items: letters
+  vars:
+    - letters:
+      - a
+      - b
+      - c

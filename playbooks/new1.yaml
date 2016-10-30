@@ -1,0 +1,13 @@
+---
+- hosts: f5
+  connection: local
+  tasks:
+  - name: newtask
+    debug: var={{ item }}
+    with_items: "{{ groups['glance_api']}}"
+  - name: newtask1
+    debug: var={{ hostvars[item]['ansible_ssh_host'] }}
+    with_items: "{{ groups['glance_api']}}"
+
+#desc: "{{ item }}"
+#ip: "{{ hostvars[item]['ansible_ssh_host'] }}"
