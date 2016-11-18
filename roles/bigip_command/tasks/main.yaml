@@ -5,7 +5,7 @@
       server: "{{ inventory_hostname }}"
       user: "{{ bigip_username }}"
       password: "{{ bigip_password }}"
-#      server_port: "{{ bigip_port }}"
+      server_port: "{{ bigip_port }}"
       validate_certs: "{{ validate_certs }}"
       command: "tmsh list sys auth"
   register: result

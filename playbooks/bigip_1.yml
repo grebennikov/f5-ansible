@@ -1,0 +1,36 @@
+- hosts: f5-test
+  connection: local
+  tasks:
+  - name: Create pool
+    bigip_pool:
+        lb_method: "{{ pool_lb_method }}"
+        name: "testpool1"
+        password: "{{ bigip_password }}"
+        server: "{{ inventory_hostname }}"
+        server_port: "{{ bigip_port }}"
+        state: "present"
+        user: "{{ bigip_username }}"
+        validate_certs: "{{ validate_certs }}"
+        monitors:
+        - http
+    register: result
+
+  - name: Add virtual server
+    bigip_virtual_server:
+        all_profiles:
+        - http
+        description: "testvs2"
+        destination: "{{ item }}"
+        name: "testvs2_{{ item }}"
+        partition: "{{ bigip_partition }}"
+        password: "{{ bigip_password }}"
+        port: 5000
+        pool: "testpool1"
+        server: "{{ inventory_hostname }}"
+        server_port: "{{ bigip_port }}"
+        snat: "{{ snat_pool |default('Automap') }}"
+        state: "present"
+        user: "{{ bigip_username }}"
+        validate_certs: "{{ validate_certs }}"
+    with_items: 192.168.210.75
+    register: result

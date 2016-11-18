@@ -15,8 +15,8 @@
         - "{{ external_vip }}"
     vs_description: "cinder-api"
     vs_name: "cinder-api"
-    vs_port1: 8776
-    vs_snat1: "Automap"
+    vs_port: 8776
+#    vs_snat: "{{ snat_pool }}" 
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -40,7 +40,7 @@
     vs_description: "glance-api"
     vs_name: "glance-api"
     vs_port1: 9292
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -64,7 +64,7 @@
     vs_description: "heat-api"
     vs_name: "heat-api"
     vs_port1: 8004
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -91,7 +91,7 @@
     vs_description: "galera"
     vs_name: "galera"
     vs_port1: 3306
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
 #    send_string: "GET "
@@ -115,7 +115,7 @@
     vs_description: "horizon"
     vs_name: "horizon"
     vs_port1: 80
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -139,7 +139,7 @@
     vs_description: "horizon-ssl"
     vs_name: "horizon-ssl"
     vs_port1: 443
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -164,7 +164,7 @@
     vs_description: "keystone-pub"
     vs_name: "keystone-pub"
     vs_port1: 5000
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -188,7 +188,7 @@
     vs_description: "keystone-admin"
     vs_name: "keystone-admin"
     vs_port1: 35357
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -213,7 +213,7 @@
     vs_description: "neutron"
     vs_name: "neutron"
     vs_port1: 9696
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -237,7 +237,7 @@
         - "{{ external_vip }}"
     vs_description: "nova-api"
     vs_name: "nova-api"
-    vs_port1: 8774
+#    vs_port1: 8774
     vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
@@ -262,7 +262,7 @@
     vs_description: "nova-api-metadata"
     vs_name: "nova-api-metadata"
     vs_port1: 8775
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
     send_string: "GET "
@@ -287,7 +287,7 @@
     vs_description: "nova-console"
     vs_name: "galera"
     vs_port1: 6080
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
 #    send_string: "GET "
@@ -312,7 +312,7 @@
     vs_description: "repo"
     vs_name: "repo"
     vs_port1: 8181
-    vs_snat1: "Automap"
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
 #    send_string: "GET "
