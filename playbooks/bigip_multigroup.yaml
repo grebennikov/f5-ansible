@@ -19,11 +19,11 @@
 #    vs_snat: "{{ snat_pool }}" 
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - cinder
-### Glance API
+## Glance API
 
 - include: bigip_complex.yaml
   vars:
@@ -39,12 +39,12 @@
         - "{{ external_vip }}"
     vs_description: "glance-api"
     vs_name: "glance-api"
-    vs_port1: 9292
+    vs_port: 9292
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - glance
 ### Heat API
@@ -63,12 +63,12 @@
         - "{{ external_vip }}"
     vs_description: "heat-api"
     vs_name: "heat-api"
-    vs_port1: 8004
+    vs_port: 8004
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - heat
 
@@ -90,7 +90,7 @@
         - "{{ external_vip }}"
     vs_description: "galera"
     vs_name: "galera"
-    vs_port1: 3306
+    vs_port: 3306
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
@@ -114,12 +114,12 @@
         - "{{ external_vip }}"
     vs_description: "horizon"
     vs_name: "horizon"
-    vs_port1: 80
+    vs_port: 80
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - horizon
 
@@ -133,17 +133,17 @@
     inv_hosts_group: "{{ groups['horizon_all']}}"
     pool_member_port: 80
     vs_profiles1:
-        - tcp-lan-optimized
+        - http
     vs_address: 
         - "{{ external_vip }}"
     vs_description: "horizon-ssl"
     vs_name: "horizon-ssl"
-    vs_port1: 443
+    vs_port: 443
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - horizon
 
@@ -163,12 +163,12 @@
         - "{{ external_vip }}"
     vs_description: "keystone-pub"
     vs_name: "keystone-pub"
-    vs_port1: 5000
+    vs_port: 5000
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - keystone
 
@@ -187,12 +187,12 @@
         - "{{ internal_vip }}"
     vs_description: "keystone-admin"
     vs_name: "keystone-admin"
-    vs_port1: 35357
+    vs_port: 35357
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - keystone
 
@@ -212,12 +212,12 @@
         - "{{ external_vip }}"
     vs_description: "neutron"
     vs_name: "neutron"
-    vs_port1: 9696
+    vs_port: 9696
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - neutron
 
@@ -237,12 +237,12 @@
         - "{{ external_vip }}"
     vs_description: "nova-api"
     vs_name: "nova-api"
-#    vs_port1: 8774
-    vs_snat1: "Automap"
+    vs_port: 8774
+#    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - nova
 
@@ -261,12 +261,12 @@
         - "{{ internal_vip }}"
     vs_description: "nova-api-metadata"
     vs_name: "nova-api-metadata"
-    vs_port1: 8775
+    vs_port: 8775
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
-    send_string: "GET "
-    receive_string: ""
+#    send_string: "GET "
+#    receive_string: ""
   tags:
     - nova
 
@@ -285,8 +285,8 @@
         - "{{ internal_vip }}"
         - "{{ external_vip }}"
     vs_description: "nova-console"
-    vs_name: "galera"
-    vs_port1: 6080
+    vs_name: "nova-console"
+    vs_port: 6080
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"
@@ -311,7 +311,7 @@
         - "{{ external_vip }}"
     vs_description: "repo"
     vs_name: "repo"
-    vs_port1: 8181
+    vs_port: 8181
 #    vs_snat1: "Automap"
     va_address: "{{ vs_address }}"
 #    monitor_name: "glance_http"

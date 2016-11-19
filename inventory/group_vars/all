@@ -7,6 +7,7 @@ bigip_partition: "Common"
 validate_certs: "no"
 
 snat_pool: new_snat_pool
+env_name: test111
 
 internal_vip: 192.168.210.75
 external_vip: 192.168.211.75

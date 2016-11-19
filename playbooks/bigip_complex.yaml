@@ -5,7 +5,7 @@
   tasks:
     - name: Create HTTP Monitor
       bigip_monitor_http:
-          name: "{{ monitor_name }}"
+          name: "{{ monitor_name }}_{{ env_name }}"
           password: "{{ bigip_password }}"
           receive: "{{ receive_string }}"
           send: "{{ send_string }}"
@@ -19,8 +19,8 @@
 
     - name: Create pool
       bigip_pool:
-          name: "{{ pool_name }}"
-#          name: "{{ item }}"
+          lb_method: "{{ pool_lb_method }}"
+          name: "{{ pool_name }}_{{ env_name }}"
           password: "{{ bigip_password }}"
           server: "{{ inventory_hostname }}"
           server_port: "{{ bigip_port }}"
@@ -29,12 +29,6 @@
           validate_certs: "{{ validate_certs }}"
           monitors: "{{ pool_monitors }}"
       register: result
-#      with_items: "{{ pool_names }}"
-#      vars:
-#          - pool_names:
-#            - "foo.pool"
-#            - "bar.pool"
-#            - "pool1.pool"
  
     - name: Add pool member
       bigip_pool_member:
@@ -43,9 +37,8 @@
           host: "{{ hostvars[item]['ansible_ssh_host'] }}"
           partition: "{{ bigip_partition }}"
           password: "{{ bigip_password }}"
-          pool: "{{ pool_name }}"
+          pool: "{{ pool_name }}_{{ env_name }}"
           port: "{{ pool_member_port }}"
-#          port: "{{ node_port }}"
           rate_limit: "{{ rate_limit }}"
           ratio: "{{ ratio }}"
           server: "{{ inventory_hostname }}"
@@ -66,21 +59,21 @@
 #          - node_port: 80
       register: result
 
-    - name: Add virtual address
-      bigip_virtual_address:
-          address: "{{ item }}"
-          partition: "{{ bigip_partition }}"
-          password: "{{ bigip_password }}"
-          server: "{{ inventory_hostname }}"
-          server_port: "{{ bigip_port }}"
-          state: "present"
-          user: "{{ bigip_username }}"
-          validate_certs: "{{ validate_certs }}"
-      when: va_address is defined
-      with_items: "{{ va_address }}"
-      register: result
-#      vars:
-#          - va_address: 10.0.0.100
+#    - name: Add virtual address
+#      bigip_virtual_address:
+#          address: "{{ item }}"
+#          partition: "{{ bigip_partition }}"
+#          password: "{{ bigip_password }}"
+#          server: "{{ inventory_hostname }}"
+#          server_port: "{{ bigip_port }}"
+#          state: "present"
+#          user: "{{ bigip_username }}"
+#          validate_certs: "{{ validate_certs }}"
+#      when: va_address is defined
+#      with_items: "{{ va_address }}"
+#      register: result
+##      vars:
+##          - va_address: 10.0.0.100
 
 
     - name: Add virtual server
@@ -88,14 +81,14 @@
           all_profiles: "{{ vs_profiles1 }}"
           description: "{{ vs_description }}"
           destination: "{{ item }}"
-          name: "{{ vs_name }}_{{ item }}"
+          name: "{{ vs_name }}_{{ item }}_{{ env_name }}"
           partition: "{{ bigip_partition }}"
           password: "{{ bigip_password }}"
           port: "{{ vs_port }}"
-          pool: "{{ pool_name }}"
+          pool: "{{ pool_name }}_{{ env_name }}"
           server: "{{ inventory_hostname }}"
           server_port: "{{ bigip_port }}"
-          snat: "{{ snat_pool }} |default('Automap')"
+          snat: "{{ snat_pool  |default('Automap') }}"
           state: "present"
           user: "{{ bigip_username }}"
           validate_certs: "{{ validate_certs }}"
