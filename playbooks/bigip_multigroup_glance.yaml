@@ -1,0 +1,52 @@
+---
+### Monasca API
+
+- include: bigip_complex.yaml
+  vars:
+    pool_name: glance_registry
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['glance_api']}}" #do they all have internal address
+    pool_member_port: 9191
+    vs_profiles1:
+        - http
+    vs_address: 
+        - "{{ internal_vip }}"
+    vs_description: "glance-registry"
+    vs_name: "glance"
+    vs_port: 9191
+#    vs_snat: "{{ snat_pool }}" 
+    snat_pool: "SNAT_Private"
+    va_address: "{{ vs_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+#
+- include: bigip_complex.yaml
+  vars:
+    pool_name: glance_api
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['glance_api']}}"
+    pool_member_port: 9292
+    pub_profiles:
+        - http
+        - Openstack_SSL
+    priv_profiles:
+        - http
+    pub_address:
+        - "{{ external_vip }}"
+    priv_address:
+        - "{{ internal_vip }}"
+    vs_description: "glance-api"
+    vs_name: "glance-api"
+    snat_pool: "SNAT_Private"
+    vs_port: 9292
+#    vs_snat1: "Automap"
+    va_address: "{{ pub_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+  tags:
+    - glance
+

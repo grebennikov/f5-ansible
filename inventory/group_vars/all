@@ -1,16 +1,15 @@
 ---
 
-bigip_username: "agrebennikov"
-bigip_password: "agrebennikov!"
+bigip_username: "user"
+bigip_password: "pass"
 bigip_port: "443"
 bigip_partition: "Common"
 validate_certs: "no"
 
-snat_pool: new_snat_pool
-env_name: test111
+env_name: env1
 
-internal_vip: 192.168.210.75
-external_vip: 192.168.211.75
+internal_vip: 192.168.100.15
+external_vip: 96.115.156.15
 
 pool_lb_method: "round_robin"
 pool_reselect_tries: 10
@@ -34,6 +33,6 @@ pool_lb_method_alt:
     - "ratio_session"
     - "ratio_least_connection_member"
     - "ratio_least_connection_node_address"
-connection_limit: 100
-rate_limit: 50
-ratio: 2
+connection_limit: 0
+rate_limit: 0
+ratio: 1

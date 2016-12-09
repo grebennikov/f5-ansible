@@ -1,0 +1,79 @@
+---
+### Monasca API
+
+- include: bigip_complex.yaml
+  vars:
+    pool_name: monasca_api
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['monasca_api']}}" #do they all have internal address
+    pool_member_port: 8070
+    vs_profiles1:
+        - http
+    vs_address: 
+        - "{{ internal_vip }}"
+        - "{{ external_vip }}"
+    vs_description: "monasca-api"
+    vs_name: "monasca-api"
+    vs_port: 8070
+#    vs_snat: "{{ snat_pool }}" 
+    snat_pool: "SNAT_Private"
+    va_address: "{{ vs_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+  tags:
+    - monasca
+#so we probably have to create vips for influx and grafana?
+#
+#Influx
+- include: bigip_complex.yaml
+  vars:
+    pool_name: influxdb
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['monasca_influxdb']}}" #this schould be a proper group from the inventory, we'll figure out in a sec
+    pool_member_port: 8086
+    vs_profiles1:
+        - http
+    vs_address:
+        - "{{ internal_vip }}"  #do we need it on external vip? i have it using internal in the playbooks (Yes we may need External configured
+        - "{{ external_vip }}"
+    vs_description: "monasca-influxdb"
+    vs_name: "monasca-influxdb"
+    vs_port: 8086
+#    vs_snat: "{{ snat_pool }}" 
+    snat_pool: "SNAT_Private"
+    va_address: "{{ vs_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+  tags:
+    - monasca
+
+#Grafana
+- include: bigip_complex.yaml
+  vars:
+    pool_name: grafana
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['monasca_grafana']}}" #this schould be a proper group from the inventory, we'll figure out in a sec
+    pool_member_port: 3000
+    vs_profiles1:
+        - http
+    vs_address:
+        - "{{ internal_vip }}"  #do we need it on external vip? i have it using internal in the playbooks (Yes we may need External configured
+        - "{{ external_vip }}"
+    vs_description: "monasca-grafana"
+    vs_name: "monasca-grafana"
+    vs_port: 3000
+#    vs_snat: "{{ snat_pool }}" 
+    snat_pool: "SNAT_Private"
+    va_address: "{{ vs_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+  tags:
+    - monasca #all set? ok cool Good J - do we need any other endpoints? @ramon now that i think about it mysql but it's not in the playbook yet ill add it after we get it up and use osa database for now# Hmmmm well, ok then that's it here. Let's try
+
+
