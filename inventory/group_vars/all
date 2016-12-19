@@ -1,15 +1,15 @@
 ---
 
 bigip_username: "user"
-bigip_password: "pass"
+bigip_password: "password"
 bigip_port: "443"
 bigip_partition: "Common"
 validate_certs: "no"
 
-env_name: env1
+env_name: tvxos_env
 
 internal_vip: 192.168.100.15
-external_vip: 96.115.156.15
+external_vip: 192.168.101.15
 
 pool_lb_method: "round_robin"
 pool_reselect_tries: 10

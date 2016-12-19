@@ -154,7 +154,6 @@
     pool_member_port: 80
     pub_profiles:
         - http
-        - Openstack_SSL
     priv_profiles:
         - http
     pub_address:
@@ -177,11 +176,13 @@
   vars:
     pool_name: horizon_ssl_all
     pool_monitors:
-        - http
+        - tcp
     inv_hosts_group: "{{ groups['horizon_all']}}"
     pool_member_port: 443
     pub_profiles:
         - http
+        - Openstack_SSL
+        - F5-self
     priv_profiles:
         - http
     pub_address:
