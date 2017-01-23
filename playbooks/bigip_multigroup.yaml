@@ -12,6 +12,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     pub_address:
         - "{{ external_vip }}"
@@ -41,6 +42,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     pub_address:
         - "{{ external_vip }}"
@@ -70,6 +72,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     priv_address:
         - "{{ internal_vip }}"
@@ -98,6 +101,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     pub_address:
         - "{{ external_vip }}"
@@ -115,33 +119,71 @@
   tags:
     - heat
 
+### Heat CFN
+
+- include: bigip_complex.yaml
+  vars:
+    pool_name: heat_cfn_api
+    pool_monitors:
+        - http
+    inv_hosts_group: "{{ groups['heat_api']}}"
+    pool_member_port: 8000
+    pub_profiles:
+        - http
+        - Openstack_SSL
+    priv_profiles:
+        - Openstack_SSL
+        - http
+    pub_address:
+        - "{{ external_vip }}"
+    priv_address:
+        - "{{ internal_vip }}"
+    vs_description: "heat-cfn_api"
+    vs_name: "heat-api"
+    vs_port: 8000
+    snat_pool: "SNAT_Private"
+#    vs_snat1: "Automap"
+    va_address: "{{ vs_address }}"
+#    monitor_name: "glance_http"
+#    send_string: "GET "
+#    receive_string: ""
+  tags:
+    - heat
+
 ### Galera
 ### iRule should be created manually to support active/standby servers
 
-#- include: bigip_complex.yaml
-#  vars:
-#    pool_name: galera_all
+- include: bigip_complex.yaml
+  vars:
+    pool_name: galera_all
 #    pool_lb_method: "round_robin"
-#    pool_monitors:
-#        - tcp
-#    inv_hosts_group: "{{ groups['galera_all']}}"
-#    pool_member_port: 3306
+    pool_monitors:
+        - tcp
+    inv_hosts_group: "{{ groups['galera_all']}}"
+    pool_member_port: 3306
+    pub_profiles:
+        - http
+    priv_profiles:
+        - http
+    priv_address:
+        - "{{ internal_vip }}"
+
 #    vs_profiles1:
 #        - tcp
 #    vs_address: 
 #        - "{{ internal_vip }}"
 #        - "{{ external_vip }}"
-#    vs_description: "galera"
-#    vs_name: "galera"
-#    vs_port: 3306
-#    snat_pool: "SNAT_Public"
+    vs_description: "galera"
+    vs_name: "galera"
+    vs_port: 3306
+    snat_pool: "SNAT_Private"
 ##    vs_snat1: "Automap"
-#    va_address: "{{ vs_address }}"
+    va_address: "{{ vs_address }}"
 ##    monitor_name: "glance_http"
 ##    send_string: "GET "
 ##    receive_string: ""
-#  tags:
-#    - galera
+  tags:
+    - galera
 
 ### Horizon
 
@@ -205,14 +247,17 @@
   vars:
     pool_name: keystone-pub
     pool_monitors:
-        - http
+        - tcp
     inv_hosts_group: "{{ groups['keystone_all']}}"
     pool_member_port: 5000
     pub_profiles:
         - http
-        - Openstack_SSL
+        - ProxyClient
+        - ProxyServer
     priv_profiles:
         - http
+        - ProxyClient
+        - ProxyServer
     pub_address:
         - "{{ external_vip }}"
     priv_address:
@@ -235,14 +280,15 @@
   vars:
     pool_name: keystone-admin
     pool_monitors:
-        - http
+        - tcp
     inv_hosts_group: "{{ groups['keystone_all']}}"
     pool_member_port: 35357
     pub_profiles:
         - http
-        - Openstack_SSL
     priv_profiles:
         - http
+        - ProxyClient
+        - ProxyServer
     priv_address:
         - "{{ internal_vip }}"
     vs_description: "keystone-admin"
@@ -270,6 +316,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     pub_address:
         - "{{ external_vip }}"
@@ -300,6 +347,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     pub_address:
         - "{{ external_vip }}"
@@ -330,6 +378,7 @@
         - http
         - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - http
     priv_address:
         - "{{ internal_vip }}"
@@ -356,7 +405,9 @@
     pool_member_port: 6082
     pub_profiles:
         - tcp
+        - Openstack_SSL
     priv_profiles:
+        - Openstack_SSL
         - tcp
     pub_address:
         - "{{ external_vip }}"
