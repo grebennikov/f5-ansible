@@ -411,8 +411,8 @@
         - tcp
     pub_address:
         - "{{ external_vip }}"
-    priv_address:
-        - "{{ internal_vip }}"
+#    priv_address:
+#        - "{{ internal_vip }}"
     vs_description: "nova-console"
     vs_name: "nova-console"
     vs_port: 6082
